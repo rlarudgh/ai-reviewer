@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p docs/interviews)",
+      "Write(docs/interviews/**)",
+      "Read(docs/interviews/**)"
+    ]
+  }
+}
