@@ -1,0 +1,37 @@
+name: "✅ Task / TODO"
+description: "새로운 할 일이나 개선 아이디어를 기록하세요."
+labels: ["todo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        새로운 작업이나 개선 사항을 제안해주세요.
+  - type: input
+    id: title-input
+    attributes:
+      label: "작업 제목"
+      placeholder: "예: [Track] DevOps 트랙 추가"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: "작업 목적"
+      description: "이 작업을 통해 달성하고자 하는 것이 무엇인가요?"
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: "상세 내용"
+      description: "작업해야 할 구체적인 내용을 체크리스트 형태로 작성해주셔도 좋습니다."
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "참고 자료 (선택)"
+      description: "작업에 도움이 될 만한 링크나 참고 자료가 있다면 작성해주세요."
