@@ -39,17 +39,18 @@
 **주요 역할:**
 
 - 스킬 메타데이터 정의 (이름, 설명, 버전)
-- 사용법 안내 (`/interview frontend` 등)
+- 사용법 안내 (`/interview frontend`, `/interview all` 등)
 - 3단계 면접 워크플로우 정의:
-  1. **Phase 1 (Setup)**: 트랙별 프롬프트 로드
-  2. **Phase 2 (Interview)**: 면접 진행 규칙
-  3. **Phase 3 (Evaluation)**: 종료 시 평가 로드
+  1. **Phase 1 (Setup)**: 트랙 선택 + 이력서 업로드 + 프롬프트 로드
+  2. **Phase 2 (Interview)**: Q&A 추적 + 면접 진행
+  3. **Phase 3 (Evaluation)**: Q&A 로그 포함 평가 리포트
 
 **수정 시 주의사항:**
 
 - `name` 필드는 `/interview` 명령어와 일치해야 합니다
 - Phase 순서를 변경하면 면접 흐름이 달라집니다
-- 트랙 추가 시 `Phase 1: Setup` 섹션에 새 매핑을 추가해야 합니다
+- 트랙 추가 시 `Phase 1: Setup` 섹션의 Track-to-Prompt Mapping 테이블에 새 행을 추가해야 합니다
+- `all` 트랙 선택 메뉴도 함께 업데이트해야 합니다
 
 ---
 
@@ -196,31 +197,25 @@
 `SKILL.md`의 Phase 1 섹션에 새 트랙 매핑을 추가합니다.
 
 ```markdown
-### Phase 1: Setup
-
-Read the track-specific prompt based on the argument:
-
-- `frontend` -> Read `prompts/frontend.md`
-- `app` -> Read `prompts/app.md`
-- `server` -> Read `prompts/server.md`
-- `{new-track}` -> Read `prompts/{new-track}.md` # <-- 추가
-- No argument -> Show track selection guide and stop
+| Track | Prompt File |
+|-------|------------|
+| `frontend` | `prompts/frontend.md` |
+| `backend` | `prompts/server.md` |
+| `app` | `prompts/app.md` |
+| `web-fullstack` | `prompts/frontend.md` + `prompts/server.md` |
+| `{new-track}` | `prompts/{new-track}.md` |  # <-- 추가
 ```
 
-**트랙 선택 가이드**도 함께 업데이트합니다:
+**Track Selection Menu**도 함께 업데이트합니다:
 
-```md
-## Usage
-```
-
-/interview frontend # React, Next.js, TypeScript
-/interview app # React Native, Flutter
-/interview server # Spring Boot, Nest.js, FastAPI
-/interview {new-track} # {설명} # <-- 추가
-/interview # 트랙 선택 안내
-
-```
-
+```markdown
+| # | 트랙 | 주요 평가 영역 |
+|---|------|--------------|
+| 1 | **Frontend** | ... |
+| 2 | **Backend** | ... |
+| 3 | **App** | ... |
+| 4 | **Web Fullstack** | ... |
+| 5 | **{New Track}** | {설명} |  # <-- 추가
 ```
 
 ### Step 3: README.md 업데이트
@@ -302,7 +297,9 @@ Read the track-specific prompt based on the argument:
 **Phase 1 (Setup)**
 
 - [ ] `/interview {track}` 실행 시 올바른 프롬프트 로드
-- [ ] `/interview` (인자 없음) 시 트랙 선택 안내 표시
+- [ ] `/interview all` 시 트랙 선택 메뉴 표시
+- [ ] 이력서 업로드 프롬프트 표시 (건너뛰기 가능)
+- [ ] 이력서 제공 시 분석 후 맞춤형 첫 질문 생성
 
 **Phase 2 (Interview)**
 
@@ -319,6 +316,9 @@ Read the track-specific prompt based on the argument:
 - [ ] 총점 계산 정확
 - [ ] 강점/보완점이 구체적인 답변 내용 인용
 - [ ] 추천 학습 방향이 실무 중심
+- [ ] Q&A 전체 로그가 리포트에 포함
+- [ ] 이력서 제공 시 후보자명 표시
+- [ ] 리포트 파일이 `docs/interviews/`에 저장됨
 
 ### 품질 검증 기준
 
@@ -361,7 +361,7 @@ Read the track-specific prompt based on the argument:
 
 ```yaml
 metadata:
-  version: "1.1.0"
+  version: "2.0.0"
 ```
 
 ### 기여 워크플로우

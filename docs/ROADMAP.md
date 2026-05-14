@@ -4,7 +4,7 @@ Claude Code 기반 기술 면접 도구의 발전 방향.
 
 ---
 
-## v1.0 — 현재 (MVP)
+## v1.0 — MVP
 
 - [x] 프론트엔드 트랙 (React, Next.js, TypeScript)
 - [x] 앱 트랙 (React Native, Flutter)
@@ -16,17 +16,30 @@ Claude Code 기반 기술 면접 도구의 발전 방향.
 
 ---
 
-## v1.1 — 품질 관리 (Short-term)
+## v2.0 — 현재 (UX 고도화)
 
-- [ ] **interview-tester**: 프롬프트 QA 자동화 — 가상 후보자가 면접을 치르며 질문 품질 검증
-- [ ] **rubric-generator**: 새 트랙 추가 시 rubric 자동 생성
-- [ ] **interview-analyzer**: 면접 기록 메타 분석 — 강점/약점 패턴, 개선 추이
-- [ ] 골든셋 EXAMPLES 확보 — 기준점이 되는 평가 리포트 샘플
-- [ ] 프롬프트 단위 테스트 환경 구축
+- [x] `/interview all` 대화형 트랙 선택 메뉴
+- [x] Web Fullstack 트랙 (Frontend + Backend 통합)
+- [x] Backend 트랙 별칭 (`server` → `backend`)
+- [x] 이력서/포트폴리오 업로드 (PDF, DOCX, MD)
+- [x] 이력서 기반 맞춤형 질문 생성
+- [x] Q&A 전체 로그 추적 및 리포트 포함
+- [x] 평가 리포트에 후보자명, 일시 정보 추가
+- [x] **interview-tester**: 프롬프트 QA 자동화
+- [x] **rubric-generator**: 새 트랙 rubric 자동 생성
+- [x] **interview-analyzer**: 면접 기록 메타 분석
+- [x] 골든셋 평가 리포트 샘플
 
 ---
 
-## v1.2 — 트랙 확장 (Mid-term)
+## v2.1 — 품질 관리 (Short-term)
+
+- [ ] 프롬프트 단위 테스트 환경 구축
+- [ ] 이력서 분석 정확도 개선
+
+---
+
+## v2.2 — 트랙 확장 (Mid-term)
 
 - [ ] **DevOps 트랙** (Docker, Kubernetes, CI/CD, AWS/GCP)
 - [ ] **AI/ML 트랙** (PyTorch, TensorFlow, MLOps, LLM)
@@ -36,7 +49,7 @@ Claude Code 기반 기술 면접 도구의 발전 방향.
 
 ---
 
-## v2.0 — 고도화 (Long-term)
+## v3.0 — 고도화 (Long-term)
 
 - [ ] **난이도 분리**: Junior / Mid / Senior 레벨별 질문 난이도 조절
 - [ ] **다국어 지원**: 영어, 일본어 면접 진행

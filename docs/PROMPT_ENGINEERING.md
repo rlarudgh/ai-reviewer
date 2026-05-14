@@ -53,11 +53,12 @@ AI Reviewer의 프롬프트 설계 철학과 관리 방법.
 ## 프롬프트 구조
 
 ```
-interviewer-system.md    ← 공통 페르소나 (수정 빈도 낮음)
+interviewer-system.md    ← 공통 페르소나 + 이력서 기반 질문 (수정 빈도 낮음)
 ├── frontend.md          ← 트랙별 Topic Guide (수정 빈도 높음)
 ├── app.md
-└── server.md
-evaluator.md             ← 평가 로직 (수정 빈도 중간)
+├── server.md            ← backend 트랙도 동일 파일 사용
+└── (web-fullstack)      ← frontend.md + server.md 동시 로드
+evaluator.md             ← 평가 로직 + Q&A 로그 포맷 (수정 빈도 중간)
 rubric.md                ← 점수 기준표 (수정 빈도 낮음)
 ```
 
@@ -66,6 +67,31 @@ rubric.md                ← 점수 기준표 (수정 빈도 낮음)
 ---
 
 ## 성능 향상 기법
+
+### Context Injection (이력서 기반 질문)
+
+이력서/포트폴리오 분석 결과를 면접 컨텍스트에 주입하여 맞춤형 질문 생성:
+
+```
+이력서 분석 결과:
+- 기술 스택: React, Next.js, TypeScript, Spring Boot
+- 경력: 5년차 프론트엔드 개발자
+- 주요 프로젝트: 대규모 이커머스 플랫폼 리빌드
+```
+
+이 컨텍스트를 바탕으로 "이력서에 ~프로젝트를 담당하셨다고 했는데" 형태로 자연스럽게 연결.
+
+### Q&A Tracking (대화 로깅)
+
+면접 중 모든 질문-답변-피드백을 구조화하여 추적:
+
+```
+### Q1. [React 렌더링] React의 reconciliation 알고리즘을 최적화하는 전략은?
+**답변:** (후보자 답변 요약)
+**피드백:** (면접관 피드백)
+```
+
+평가 리포트 생성 시 이 로그를 그대로 포함하여 투명성과 재현성 확보.
 
 ### Chain of Thought (CoT)
 

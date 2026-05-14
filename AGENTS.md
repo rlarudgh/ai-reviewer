@@ -6,8 +6,10 @@ Claude Code 기반 기술 면접 도구.
 
 ### 면접 진행
 - `/interview frontend` - React, Next.js, TypeScript, Vue, 아키텍처(FSD), 알고리즘 면접
+- `/interview backend` - Spring Boot, Nest.js, FastAPI 면접
 - `/interview app` - React Native, Flutter 면접
-- `/interview server` - Spring Boot, Nest.js, FastAPI 면접
+- `/interview web-fullstack` - Frontend + Backend 통합 면접
+- `/interview all` - 트랙 선택 메뉴 + 이력서 업로드
 - `/interview` - 트랙 선택 안내
 
 ### 품질 관리

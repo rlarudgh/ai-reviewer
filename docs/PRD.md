@@ -1,8 +1,9 @@
 # Product Requirements Document (PRD)
 
-**프로젝트명:** AI Reviewer  
-**버전:** 1.0.0  
-**작성일:** 2026-05-13  
+**프로젝트명:** AI Reviewer
+**버전:** 2.0.0
+**작성일:** 2026-05-13
+**업데이트:** 2026-05-14
 **상태:** Released
 
 ---
@@ -37,8 +38,12 @@ AI Reviewer는 Claude Code Skill 기반 인터랙티브 기술 면접 도구입�
 | FR-002 | 인자 없이 실행 시 트랙 선택 안내 표시                  | P0       |
 | FR-003 | `frontend` 트랙: React, Next.js, TypeScript 면접 진행  | P0       |
 | FR-004 | `app` 트랙: React Native, Flutter 면접 진행            | P0       |
-| FR-005 | `server` 트랙: Spring Boot, Nest.js, FastAPI 면접 진행 | P0       |
+| FR-005 | `backend` 트랙: Spring Boot, Nest.js, FastAPI 면접 진행 | P0      |
 | FR-006 | 새로운 트랙 추가가 용이한 구조                         | P1       |
+| FR-028 | `/interview all` 대화형 트랙 선택 메뉴 제공            | P0       |
+| FR-029 | `web-fullstack` 트랙: Frontend + Backend 통합 면접 진행 | P0      |
+| FR-030 | 이력서/포트폴리오 파일 업로드 및 분석 (PDF, DOCX, MD)  | P1       |
+| FR-031 | 이력서 기반 맞춤형 질문 생성                          | P1       |
 
 ### 2.2 면접 진행
 
@@ -68,6 +73,8 @@ AI Reviewer는 Claude Code Skill 기반 인터랙티브 기술 면접 도구입�
 | FR-023 | 추천 학습 방향 제시                             | P0       |
 | FR-024 | 평가 기준은 rubric.md에 정의된 1-10점 척도 사용 | P0       |
 | FR-025 | 평가 리포트에 구체적인 답변 내용 인용           | P1       |
+| FR-032 | 면접 중 모든 Q&A를 추적하여 리포트에 포함       | P0       |
+| FR-033 | 평가 리포트에 후보자명, 일시 정보 포함           | P1       |
 
 ### 2.4 언어 및 문화
 
@@ -121,27 +128,32 @@ AI Reviewer는 Claude Code Skill 기반 인터랙티브 기술 면접 도구입�
 User (Claude Code CLI)
   │
   ▼
-/interview [track]
+/interview [track] | /interview all
   │
-  ├──► SKILL.md (메타데이터 & 워크플로우)
+  ├──► SKILL.md (메타데이터 & 워크플로우 v2.0)
+  │       ├── Track Selection Menu (all/인자없음)
+  │       └── Resume Upload Step
   │
   ├──► prompts/interviewer-system.md (면접관 페르소나)
+  │       └── Resume-Based Interviewing 섹션
   │
   ├──► prompts/{track}.md (트랙별 주제 가이드)
   │         ├── frontend.md
   │         ├── app.md
-  │         └── server.md
+  │         ├── server.md (backend 별칭)
+  │         └── frontend.md + server.md (web-fullstack)
   │
   ├──► prompts/evaluator.md (평가 에이전트)
+  │       └── Q&A 전체 로그 포함
   │
   └──► rubric.md (평가 기준표)
 ```
 
 ### 4.2 데이터 흐름
 
-1. **Setup Phase**: SKILL.md 읽기 → 트랙 매핑 → 해당 프롬프트 로드
-2. **Interview Phase**: interviewer-system.md + {track}.md 기반 질문 생성 및 피드백
-3. **Evaluation Phase**: evaluator.md + rubric.md 기반 대화 기록 분석 및 리포트 생성
+1. **Setup Phase**: SKILL.md 읽기 → 트랙 선택 (`all` 시 메뉴) → 이력서 업로드 (선택) → 프롬프트 로드
+2. **Interview Phase**: interviewer-system.md + {track}.md 기반 질문 생성, 이력서 분석 컨텍스트 반영, Q&A 로그 추적
+3. **Evaluation Phase**: evaluator.md + rubric.md 기반 대화 기록 분석, Q&A 로그 포함 리포트 생성
 
 ---
 
@@ -178,13 +190,25 @@ User (Claude Code CLI)
 5. 사용자가 "평가해줘" 입력
 6. 종합 평가 리포트 출력
 
-### 6.2 시나리오 2: 트랙 선택 안내
+### 6.2 시나리오 2: 대화형 트랙 선택 + 이력서 업로드
 
-1. 사용자가 `/interview` 입력 (인자 없음)
-2. 사용 가능한 트랙 목록과 설명 표시
-3. 사용자가 원하는 트랙 입력 후 면접 시작
+1. 사용자가 `/interview all` 입력
+2. 4개 트랙 선택 메뉴 표시 (Frontend, Backend, App, Web Fullstack)
+3. 사용자가 번호 또는 이름으로 트랙 선택
+4. 이력서/포트폴리오 파일 경로 입력 요청
+5. 사용자가 파일 경로 입력 (또는 건너뛰기)
+6. 이력서 분석 후 맞춤형 면접 시작
+7. Q&A 추적하며 면접 진행
+8. 종료 시 Q&A 로그가 포함된 평가 리포트 생성
 
-### 6.3 시나리오 3: 중간 종료
+### 6.3 시나리오 3: Web Fullstack 면접
+
+1. 사용자가 `/interview web-fullstack` 입력
+2. Frontend + Backend 주제 교차 진행
+3. 통합 설계 질문 포함 (API 설계, 프론트-백 연동)
+4. 종료 시 통합 평가 리포트 생성
+
+### 6.4 시나리오 4: 중간 종료
 
 1. 면접 진행 중 사용자가 "그만" 입력
 2. 지금까지의 답변으로 종합 평가 리포트 생성
@@ -204,16 +228,25 @@ User (Claude Code CLI)
 - [x] 종료 키워드 인식 확인
 - [x] 스킬 개발 문서 작성 완료
 
-### 7.2 향후 버전 계획
+### 7.2 v2.0.0 릴리즈 기준
+
+- [x] `/interview all` 대화형 트랙 선택 메뉴
+- [x] Web Fullstack 트랙 (Frontend + Backend 통합)
+- [x] Backend 트랙 별칭 (`server` → `backend`)
+- [x] 이력서/포트폴리오 업로드 및 맞춤형 질문
+- [x] Q&A 전체 로그 추적 및 리포트 포함
+- [x] 평가 리포트에 후보자명, 일시 정보 추가
+- [x] README.md v2.0 사용법 업데이트
+
+### 7.3 향후 버전 계획
 
 | 버전   | 목표                                           | 예상 일정 |
 | ------ | ---------------------------------------------- | --------- |
-| v1.1.0 | 새 트랙 추가 (DevOps/Infra)                    | 미정      |
-| v1.2.0 | 커스텀 평가 기준 설정                          | 미정      |
-| v1.3.0 | **경력 수준별 면접 레벨** (신입/주니어/시니어) | 미정      |
-| v2.0.0 | 면접 기록 저장 및 분석                         | 미정      |
+| v2.1.0 | 새 트랙 추가 (DevOps/Infra)                    | 미정      |
+| v2.2.0 | 커스텀 평가 기준 설정                          | 미정      |
+| v3.0.0 | **경력 수준별 면접 레벨** (신입/주니어/시니어) | 미정      |
 
-#### v1.3.0 상세 계획: 경력 수준별 면접 레벨
+#### v3.0.0 상세 계획: 경력 수준별 면접 레벨
 
 **배경**: 현재는 "경력자"를 전제로 한 시니어 중심 면접만 지원. 신입/주니어 대상 면접이 필요함.
 
